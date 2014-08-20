@@ -1,0 +1,371 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "Pedro",
+    "longName": "Db 31",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/icono.png",
+                "menuIcon": true,
+                "name": "IMAGE_ICONO",
+                "type": "png"
+            },
+            {
+                "file": "images/sepames.png",
+                "name": "IMAGE_SEPAMES",
+                "type": "png"
+            },
+            {
+                "file": "images/tilde.png",
+                "name": "IMAGE_TILDE",
+                "type": "png"
+            },
+            {
+                "file": "images/separador.png",
+                "name": "IMAGE_SEPARATOR",
+                "type": "png"
+            },
+            {
+                "file": "images/fondo.png",
+                "name": "IMAGE_BACKGROUND",
+                "type": "png"
+            },
+            {
+                "file": "images/icon_bluetooth.png",
+                "name": "IMAGE_BLUETOOTH",
+                "type": "png"
+            },
+            {
+                "file": "images/icon_meter.png",
+                "name": "IMAGE_METER_BAR",
+                "type": "png"
+            },
+            {
+                "file": "images/time_format_24H.png",
+                "name": "IMAGE_24_HOUR_MODE",
+                "type": "png"
+            },
+            {
+                "file": "images/time_format_PM.png",
+                "name": "IMAGE_PM_MODE",
+                "type": "png"
+            },
+            {
+                "file": "images/domingo.png",
+                "name": "IMAGE_DAY_NAME_SUN",
+                "type": "png"
+            },
+            {
+                "file": "images/lunes.png",
+                "name": "IMAGE_DAY_NAME_MON",
+                "type": "png"
+            },
+            {
+                "file": "images/martes.png",
+                "name": "IMAGE_DAY_NAME_TUE",
+                "type": "png"
+            },
+            {
+                "file": "images/miercoles.png",
+                "name": "IMAGE_DAY_NAME_WED",
+                "type": "png"
+            },
+            {
+                "file": "images/jueves.png",
+                "name": "IMAGE_DAY_NAME_THU",
+                "type": "png"
+            },
+            {
+                "file": "images/viernes.png",
+                "name": "IMAGE_DAY_NAME_FRI",
+                "type": "png"
+            },
+            {
+                "file": "images/sabado.png",
+                "name": "IMAGE_DAY_NAME_SAT",
+                "type": "png"
+            },
+            {
+                "file": "images/dia0.png",
+                "name": "IMAGE_DATENUM_0",
+                "type": "png"
+            },
+            {
+                "file": "images/dia1.png",
+                "name": "IMAGE_DATENUM_1",
+                "type": "png"
+            },
+            {
+                "file": "images/dia2.png",
+                "name": "IMAGE_DATENUM_2",
+                "type": "png"
+            },
+            {
+                "file": "images/dia3.png",
+                "name": "IMAGE_DATENUM_3",
+                "type": "png"
+            },
+            {
+                "file": "images/dia4.png",
+                "name": "IMAGE_DATENUM_4",
+                "type": "png"
+            },
+            {
+                "file": "images/dia5.png",
+                "name": "IMAGE_DATENUM_5",
+                "type": "png"
+            },
+            {
+                "file": "images/dia6.png",
+                "name": "IMAGE_DATENUM_6",
+                "type": "png"
+            },
+            {
+                "file": "images/dia7.png",
+                "name": "IMAGE_DATENUM_7",
+                "type": "png"
+            },
+            {
+                "file": "images/dia8.png",
+                "name": "IMAGE_DATENUM_8",
+                "type": "png"
+            },
+            {
+                "file": "images/dia9.png",
+                "name": "IMAGE_DATENUM_9",
+                "type": "png"
+            },
+            {
+                "file": "images/g0.png",
+                "name": "IMAGE_NUM_0",
+                "type": "png"
+            },
+            {
+                "file": "images/g1.png",
+                "name": "IMAGE_NUM_1",
+                "type": "png"
+            },
+            {
+                "file": "images/g2.png",
+                "name": "IMAGE_NUM_2",
+                "type": "png"
+            },
+            {
+                "file": "images/g3.png",
+                "name": "IMAGE_NUM_3",
+                "type": "png"
+            },
+            {
+                "file": "images/g4.png",
+                "name": "IMAGE_NUM_4",
+                "type": "png"
+            },
+            {
+                "file": "images/g5.png",
+                "name": "IMAGE_NUM_5",
+                "type": "png"
+            },
+            {
+                "file": "images/g6.png",
+                "name": "IMAGE_NUM_6",
+                "type": "png"
+            },
+            {
+                "file": "images/g7.png",
+                "name": "IMAGE_NUM_7",
+                "type": "png"
+            },
+            {
+                "file": "images/g8.png",
+                "name": "IMAGE_NUM_8",
+                "type": "png"
+            },
+            {
+                "file": "images/g9.png",
+                "name": "IMAGE_NUM_9",
+                "type": "png"
+            },
+            {
+                "file": "images/seg0.png",
+                "name": "SEG_NUM_0",
+                "type": "png"
+            },
+            {
+                "file": "images/seg1.png",
+                "name": "SEG_NUM_1",
+                "type": "png"
+            },
+            {
+                "file": "images/seg2.png",
+                "name": "SEG_NUM_2",
+                "type": "png"
+            },
+            {
+                "file": "images/seg3.png",
+                "name": "SEG_NUM_3",
+                "type": "png"
+            },
+            {
+                "file": "images/seg4.png",
+                "name": "SEG_NUM_4",
+                "type": "png"
+            },
+            {
+                "file": "images/seg5.png",
+                "name": "SEG_NUM_5",
+                "type": "png"
+            },
+            {
+                "file": "images/seg6.png",
+                "name": "SEG_NUM_6",
+                "type": "png"
+            },
+            {
+                "file": "images/seg7.png",
+                "name": "SEG_NUM_7",
+                "type": "png"
+            },
+            {
+                "file": "images/seg8.png",
+                "name": "SEG_NUM_8",
+                "type": "png"
+            },
+            {
+                "file": "images/seg9.png",
+                "name": "SEG_NUM_9",
+                "type": "png"
+            },
+            {
+                "file": "images/a0.png",
+                "name": "ANO_NUM_0",
+                "type": "png"
+            },
+            {
+                "file": "images/a1.png",
+                "name": "ANO_NUM_1",
+                "type": "png"
+            },
+            {
+                "file": "images/a2.png",
+                "name": "ANO_NUM_2",
+                "type": "png"
+            },
+            {
+                "file": "images/a3.png",
+                "name": "ANO_NUM_3",
+                "type": "png"
+            },
+            {
+                "file": "images/a4.png",
+                "name": "ANO_NUM_4",
+                "type": "png"
+            },
+            {
+                "file": "images/a5.png",
+                "name": "ANO_NUM_5",
+                "type": "png"
+            },
+            {
+                "file": "images/a6.png",
+                "name": "ANO_NUM_6",
+                "type": "png"
+            },
+            {
+                "file": "images/a7.png",
+                "name": "ANO_NUM_7",
+                "type": "png"
+            },
+            {
+                "file": "images/a8.png",
+                "name": "ANO_NUM_8",
+                "type": "png"
+            },
+            {
+                "file": "images/a9.png",
+                "name": "ANO_NUM_9",
+                "type": "png"
+            },
+            {
+                "file": "images/bateriacargando.png",
+                "name": "IMAGE_BATTERY_CHARGE",
+                "type": "png"
+            },
+            {
+                "file": "images/bateria.png",
+                "name": "IMAGE_BATTERY",
+                "type": "png"
+            },
+            {
+                "file": "images/icon_mail.png",
+                "name": "IMAGE_EMAIL",
+                "type": "png"
+            },
+            {
+                "file": "images/tiny_0.png",
+                "name": "IMAGE_TINY_0",
+                "type": "png"
+            },
+            {
+                "file": "images/tiny_1.png",
+                "name": "IMAGE_TINY_1",
+                "type": "png"
+            },
+            {
+                "file": "images/tiny_2.png",
+                "name": "IMAGE_TINY_2",
+                "type": "png"
+            },
+            {
+                "file": "images/tiny_3.png",
+                "name": "IMAGE_TINY_3",
+                "type": "png"
+            },
+            {
+                "file": "images/tiny_4.png",
+                "name": "IMAGE_TINY_4",
+                "type": "png"
+            },
+            {
+                "file": "images/tiny_5.png",
+                "name": "IMAGE_TINY_5",
+                "type": "png"
+            },
+            {
+                "file": "images/tiny_6.png",
+                "name": "IMAGE_TINY_6",
+                "type": "png"
+            },
+            {
+                "file": "images/tiny_7.png",
+                "name": "IMAGE_TINY_7",
+                "type": "png"
+            },
+            {
+                "file": "images/tiny_8.png",
+                "name": "IMAGE_TINY_8",
+                "type": "png"
+            },
+            {
+                "file": "images/tiny_9.png",
+                "name": "IMAGE_TINY_9",
+                "type": "png"
+            },
+            {
+                "file": "images/tiny_percent.png",
+                "name": "IMAGE_TINY_PERCENT",
+                "type": "png"
+            }
+        ]
+    },
+    "shortName": "Db 31",
+    "uuid": "11d1527e-985b-4844-bc10-34ede0ee9caf",
+    "versionCode": 10,
+    "versionLabel": "1",
+    "watchapp": {
+        "watchface": true
+    }
+}
