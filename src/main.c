@@ -7,10 +7,18 @@ static uint8_t batteryPercent;
 
 
 #define SETTINGS_KEY 99
+  
+// SPANISH = 1, texto en español
+// SPANISH = 0, text in english  
+#define SPANISH 1
 
-
+// Vibe on BT lost  
 static int BluetoothVibe = 1;
+
+// Vibe on hour change
 static int HourlyVibe = 0;
+
+// Animated seconds
 static int Blink = 1;
 
 
@@ -57,6 +65,16 @@ const int DAY_NAME_IMAGE_RESOURCE_IDS[] = {
   RESOURCE_ID_IMAGE_DAY_NAME_THU,
   RESOURCE_ID_IMAGE_DAY_NAME_FRI,
   RESOURCE_ID_IMAGE_DAY_NAME_SAT
+};
+
+const int DAY_NAME_EN_IMAGE_RESOURCE_IDS[] = {
+  RESOURCE_ID_IMAGE_DAY_NAME_SUN_EN,
+  RESOURCE_ID_IMAGE_DAY_NAME_MON_EN,
+  RESOURCE_ID_IMAGE_DAY_NAME_TUE_EN,
+  RESOURCE_ID_IMAGE_DAY_NAME_WED_EN,
+  RESOURCE_ID_IMAGE_DAY_NAME_THU_EN,
+  RESOURCE_ID_IMAGE_DAY_NAME_FRI_EN,
+  RESOURCE_ID_IMAGE_DAY_NAME_SAT_EN
 };
 
 #define TOTAL_DATE_DIGITS 2	
@@ -251,7 +269,11 @@ unsigned short get_display_hour(unsigned short hour) {
 }
 
 static void update_days(struct tm *tick_time) {
-  set_container_image(&day_name_image, day_name_layer, DAY_NAME_IMAGE_RESOURCE_IDS[tick_time->tm_wday], GPoint(41, 42));
+  if (SPANISH==1)
+    set_container_image(&day_name_image, day_name_layer, DAY_NAME_IMAGE_RESOURCE_IDS[tick_time->tm_wday], GPoint(41, 42));
+  else
+    set_container_image(&day_name_image, day_name_layer, DAY_NAME_EN_IMAGE_RESOURCE_IDS[tick_time->tm_wday], GPoint(41, 42));
+    
   set_container_image(&date_digits_images[0], date_digits_layers[0], DATENUM_IMAGE_RESOURCE_IDS[tick_time->tm_mday/10], GPoint(72, 70));
   set_container_image(&date_digits_images[1], date_digits_layers[1], DATENUM_IMAGE_RESOURCE_IDS[tick_time->tm_mday%10], GPoint(85, 70));
 }

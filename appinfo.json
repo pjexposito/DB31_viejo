@@ -9,6 +9,41 @@
     "resources": {
         "media": [
             {
+                "file": "images/saturday.png",
+                "name": "IMAGE_DAY_NAME_SAT_EN",
+                "type": "png"
+            },
+            {
+                "file": "images/friday.png",
+                "name": "IMAGE_DAY_NAME_FRI_EN",
+                "type": "png"
+            },
+            {
+                "file": "images/thusday.png",
+                "name": "IMAGE_DAY_NAME_THU_EN",
+                "type": "png"
+            },
+            {
+                "file": "images/wednesday.png",
+                "name": "IMAGE_DAY_NAME_WED_EN",
+                "type": "png"
+            },
+            {
+                "file": "images/tuesday.png",
+                "name": "IMAGE_DAY_NAME_TUE_EN",
+                "type": "png"
+            },
+            {
+                "file": "images/monday.png",
+                "name": "IMAGE_DAY_NAME_MON_EN",
+                "type": "png"
+            },
+            {
+                "file": "images/sunday.png",
+                "name": "IMAGE_DAY_NAME_SUN_EN",
+                "type": "png"
+            },
+            {
                 "file": "images/icono.png",
                 "menuIcon": true,
                 "name": "IMAGE_ICONO",
@@ -362,9 +397,9 @@
         ]
     },
     "shortName": "Db 31",
-    "uuid": "11d1527e-985b-4844-bc10-34ede0ee9caf",
+    "uuid": "a8336799-b197-4e3d-8afd-3290317c65b2",
     "versionCode": 10,
-    "versionLabel": "1",
+    "versionLabel": "1.0",
     "watchapp": {
         "watchface": true
     }
