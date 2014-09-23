@@ -1,5 +1,14 @@
-#include "pebble.h"
+// Gráficos de los iconos adaptados de http://icons.primail.ch/index.php?page=iconset_weather
+// Código del tiempo adaptado de https://github.com/Niknam/futura-weather-sdk2.0
+// Código del reloj basado en https://github.com/orviwan/91-Dub-v2.0
 
+#include "pebble.h"
+#include "network.h"
+
+static WeatherData *weather_data;
+
+  
+  
 static Window *window;
 static Layer *window_layer;
 
@@ -11,6 +20,10 @@ static uint8_t batteryPercent;
 // SPANISH = 1, texto en español
 // SPANISH = 0, text in english  
 #define SPANISH 1
+  
+// TIEMPO = 1, muestra el clima
+// TIEMPO = 0, no muestra datos del clima 
+#define TIEMPO 1
 
 // Vibe on BT lost  
 static int BluetoothVibe = 1;
@@ -21,6 +34,7 @@ static int HourlyVibe = 0;
 // Animated seconds
 static int Blink = 1;
 
+static bool estado=0;
 
 static bool appStarted = false;
 
@@ -53,6 +67,31 @@ static BitmapLayer *time_format_layer;
 
 static GBitmap *seg_format_image;
 static BitmapLayer *seg_format_layer;
+
+static GBitmap *iconotiempo_image;
+static BitmapLayer *iconotiempo_layer;
+const int ICONOTIEMPO_IMAGE_RESOURCE_IDS[] = {
+  RESOURCE_ID_ICON_CLEAR_DAY,
+  RESOURCE_ID_ICON_CLEAR_NIGHT,
+  RESOURCE_ID_ICON_RAIN,
+  RESOURCE_ID_ICON_SNOW,
+  RESOURCE_ID_ICON_SLEET,
+  RESOURCE_ID_ICON_WIND,
+  RESOURCE_ID_ICON_FOG,
+  RESOURCE_ID_ICON_CLOUDY,
+  RESOURCE_ID_ICON_PARTLY_CLOUDY_DAY,
+  RESOURCE_ID_ICON_PARTLY_CLOUDY_NIGHT,
+  RESOURCE_ID_ICON_THUNDER,
+  RESOURCE_ID_ICON_RAIN_SNOW,
+  RESOURCE_ID_ICON_RAIN_SLEET,
+  RESOURCE_ID_ICON_SNOW_SLEET,
+  RESOURCE_ID_ICON_COLD,
+  RESOURCE_ID_ICON_HOT,
+  RESOURCE_ID_ICON_DRIZZLE,
+  RESOURCE_ID_ICON_NOT_AVAILABLE
+
+};
+
 
 static GBitmap *day_name_image;
 static BitmapLayer *day_name_layer;
@@ -149,6 +188,10 @@ const int SEG_DIGIT_IMAGE_RESOURCE_IDS[] = {
   RESOURCE_ID_SEG_NUM_9
 };
 
+#define TOTAL_TEMP_DIGITS 3
+static GBitmap *temp_image[TOTAL_TEMP_DIGITS];
+static BitmapLayer *temp_layers[TOTAL_TEMP_DIGITS];
+
 #define TOTAL_BATTERY_PERCENT_DIGITS 3
 static GBitmap *battery_percent_image[TOTAL_BATTERY_PERCENT_DIGITS];
 static BitmapLayer *battery_percent_layers[TOTAL_BATTERY_PERCENT_DIGITS];
@@ -164,18 +207,14 @@ const int TINY_IMAGE_RESOURCE_IDS[] = {
   RESOURCE_ID_IMAGE_TINY_7,
   RESOURCE_ID_IMAGE_TINY_8,
   RESOURCE_ID_IMAGE_TINY_9,
-  RESOURCE_ID_IMAGE_TINY_PERCENT
+  RESOURCE_ID_IMAGE_TINY_PERCENT,
+  RESOURCE_ID_IMAGE_TINY_G  
 };
 
-void change_background() {
-  gbitmap_destroy(background_image);
 
-    background_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUND);
+
   
-  
-  bitmap_layer_set_bitmap(background_layer, background_image);
-  layer_mark_dirty(bitmap_layer_get_layer(background_layer));
-}
+
 
 void change_battery_icon(bool charging) {
   gbitmap_destroy(battery_image);
@@ -207,6 +246,99 @@ static void set_container_image(GBitmap **bmp_image, BitmapLayer *bmp_layer, con
 	gbitmap_destroy(old_image);
 	old_image = NULL;
   }
+}
+
+
+void pinta_clima(void){
+  
+    if (weather_data->updated == 0 && weather_data->error == WEATHER_E_OK)
+    { 
+      set_container_image(&temp_image[0], temp_layers[0], TINY_IMAGE_RESOURCE_IDS[0], GPoint(13, 69));
+      set_container_image(&temp_image[1], temp_layers[1], TINY_IMAGE_RESOURCE_IDS[0], GPoint(26, 69));
+      //APP_LOG(APP_LOG_LEVEL_DEBUG, "Aun sin datos");    
+    }
+  else
+    {  
+     int c = weather_data->condition;
+     int icono;
+     bool night_time = false;
+     if (weather_data->current_time < weather_data->sunrise || weather_data->current_time > weather_data->sunset)
+        night_time = true;
+     if (c < 300) 
+     {
+       icono = 10;
+     }
+     else if (c < 500) 
+     {
+       icono = 16;
+     }
+  // Rain / Freezing rain / Shower rain
+     else if (c < 600) 
+     {
+       icono = 2;
+     }
+  // Snow
+     else if (c < 700) 
+     {
+       icono = 3;
+     }
+  // Fog / Mist / Haze / etc.
+     else if (c < 771) 
+     {
+       icono = 6;
+     }
+  // Tornado / Squalls
+     else if (c < 800) 
+     {
+       icono = 2;
+     }
+  // Sky is clear
+     else if (c == 800) 
+     {
+       if (night_time)
+         icono = 1;
+       else
+         icono = 0;
+     }
+  // few/scattered/broken clouds
+     else if (c < 804) 
+     {
+       if (night_time)
+         icono = 9;
+       else
+         icono = 8;
+     }
+  // overcast clouds
+     else if (c == 804) 
+     {
+       icono = 7;
+     }
+  // Extreme
+     else if ((c >= 900 && c < 903) || (c > 904 && c < 1000)) 
+     {
+       icono = 5;
+     }
+  // Cold
+     else if (c == 903) 
+     {
+       icono = 14;
+     }
+  // Hot
+     else if (c == 904) 
+     {
+       icono = 15;
+     }
+     else 
+     {
+    // Weather condition not available
+      icono = 17;
+     }
+     set_container_image(&temp_image[0], temp_layers[0], TINY_IMAGE_RESOURCE_IDS[weather_data->temperature/10], GPoint(13, 69));
+     set_container_image(&temp_image[1], temp_layers[1], TINY_IMAGE_RESOURCE_IDS[weather_data->temperature%10], GPoint(20, 69));
+     set_container_image(&temp_image[2], temp_layers[2], TINY_IMAGE_RESOURCE_IDS[11], GPoint(27, 69));
+     set_container_image(&iconotiempo_image, iconotiempo_layer , ICONOTIEMPO_IMAGE_RESOURCE_IDS[icono], GPoint(34, 66));
+     //APP_LOG(APP_LOG_LEVEL_DEBUG, "Voy a pintar: temperatura %i; condicion %i; icono %i", weather_data->temperature, weather_data->condition, icono);    
+    } 
 }
 
 static void update_battery(BatteryChargeState charge_state) {
@@ -259,6 +391,7 @@ void battery_layer_update_callback(Layer *me, GContext* ctx) {
   graphics_fill_rect(ctx, GRect(2, 2, ((batteryPercent/100.0)*11.0), 3), 0, GCornerNone);
 }
 
+
 unsigned short get_display_hour(unsigned short hour) {
   if (clock_is_24h_style()) {
     return hour;
@@ -273,14 +406,29 @@ static void update_days(struct tm *tick_time) {
     set_container_image(&day_name_image, day_name_layer, DAY_NAME_IMAGE_RESOURCE_IDS[tick_time->tm_wday], GPoint(41, 42));
   else
     set_container_image(&day_name_image, day_name_layer, DAY_NAME_EN_IMAGE_RESOURCE_IDS[tick_time->tm_wday], GPoint(41, 42));
-    
-  set_container_image(&date_digits_images[0], date_digits_layers[0], DATENUM_IMAGE_RESOURCE_IDS[tick_time->tm_mday/10], GPoint(72, 70));
-  set_container_image(&date_digits_images[1], date_digits_layers[1], DATENUM_IMAGE_RESOURCE_IDS[tick_time->tm_mday%10], GPoint(85, 70));
+  if (SPANISH==1)
+  {
+    set_container_image(&date_digits_images[0], date_digits_layers[0], DATENUM_IMAGE_RESOURCE_IDS[tick_time->tm_mday/10], GPoint(72, 70));
+    set_container_image(&date_digits_images[1], date_digits_layers[1], DATENUM_IMAGE_RESOURCE_IDS[tick_time->tm_mday%10], GPoint(85, 70));
+  }
+  else
+  {
+    set_container_image(&date_digits_images[0], date_digits_layers[0], DATENUM_IMAGE_RESOURCE_IDS[tick_time->tm_mday/10], GPoint(110, 70));
+    set_container_image(&date_digits_images[1], date_digits_layers[1], DATENUM_IMAGE_RESOURCE_IDS[tick_time->tm_mday%10], GPoint(123, 70));    
+  }  
 }
 
 static void update_months(struct tm *tick_time) {
-  set_container_image(&month_digits_images[0], month_digits_layers[0], DATENUM_IMAGE_RESOURCE_IDS[(tick_time->tm_mon+1)/10], GPoint(110, 70));
-  set_container_image(&month_digits_images[1], month_digits_layers[1], DATENUM_IMAGE_RESOURCE_IDS[(tick_time->tm_mon+1)%10], GPoint(123, 70));
+  if (SPANISH==1)
+  {
+    set_container_image(&month_digits_images[0], month_digits_layers[0], DATENUM_IMAGE_RESOURCE_IDS[(tick_time->tm_mon+1)/10], GPoint(110, 70));
+    set_container_image(&month_digits_images[1], month_digits_layers[1], DATENUM_IMAGE_RESOURCE_IDS[(tick_time->tm_mon+1)%10], GPoint(123, 70));  }
+  else
+  {
+    set_container_image(&month_digits_images[0], month_digits_layers[0], DATENUM_IMAGE_RESOURCE_IDS[(tick_time->tm_mon+1)/10], GPoint(72, 70));
+    set_container_image(&month_digits_images[1], month_digits_layers[1], DATENUM_IMAGE_RESOURCE_IDS[(tick_time->tm_mon+1)%10], GPoint(85, 70));    
+  }  
+    
 }
 
 static void update_years(struct tm *tick_time) {
@@ -343,16 +491,31 @@ static void handle_tick(struct tm *tick_time, TimeUnits units_changed) {
   }
   if (units_changed & MINUTE_UNIT) {
     update_minutes(tick_time);
+    if (TIEMPO==1) pinta_clima();
   }	
   if (units_changed & SECOND_UNIT) {
     update_seconds(tick_time);
-  }		
+  }	
+  
+  
+  if (units_changed & MINUTE_UNIT && (tick_time->tm_min % 15) == 0)
+  {
+    if (TIEMPO==1) request_weather();
+  }
+  
+  
 }
 
 
 
 
 static void init(void) {
+  
+  if (TIEMPO==1) 
+  {
+    weather_data = malloc(sizeof(WeatherData));
+    init_network(weather_data);
+  }
   memset(&time_digits_layers, 0, sizeof(time_digits_layers));
   memset(&time_digits_images, 0, sizeof(time_digits_images));
   memset(&year_digits_layers, 0, sizeof(year_digits_layers));
@@ -364,6 +527,9 @@ static void init(void) {
   memset(&date_digits_images, 0, sizeof(date_digits_images));
   memset(&battery_percent_layers, 0, sizeof(battery_percent_layers));
   memset(&battery_percent_image, 0, sizeof(battery_percent_image));
+
+  memset(&temp_layers, 0, sizeof(temp_layers));
+  memset(&temp_image, 0, sizeof(temp_image));
 
  
 
@@ -390,18 +556,33 @@ static void init(void) {
   bitmap_layer_set_bitmap(separator_layer, separator_image);
   layer_add_child(window_layer, bitmap_layer_get_layer(separator_layer));   
 
-  meter_bar_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_METER_BAR);
-  GRect frame2 = (GRect) {
-    .origin = { .x = 13, .y = 70 },
-    .size = meter_bar_image->bounds.size
-  };
-  meter_bar_layer = bitmap_layer_create(frame2);
-  bitmap_layer_set_bitmap(meter_bar_layer, meter_bar_image);
-  layer_add_child(window_layer, bitmap_layer_get_layer(meter_bar_layer));  
+  if (TIEMPO==0)
+  {
+    meter_bar_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_METER_BAR);
+    GRect frame2 = (GRect) {
+      .origin = { .x = 13, .y = 70 },
+      .size = meter_bar_image->bounds.size
+    };
+    meter_bar_layer = bitmap_layer_create(frame2);
+    bitmap_layer_set_bitmap(meter_bar_layer, meter_bar_image);
+    layer_add_child(window_layer, bitmap_layer_get_layer(meter_bar_layer)); 
+  }
 
   bluetooth_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BLUETOOTH);
+  int bt_x, bt_y;
+  if (TIEMPO==0)
+    {
+    bt_x = 29;
+    bt_y = 70;
+    }
+  else
+    {
+    bt_x = 36;
+    bt_y = 82;
+    }
+    
   GRect frame3 = (GRect) {
-    .origin = { .x = 29, .y = 70 },
+    .origin = { .x = bt_x, .y = bt_y },
     .size = bluetooth_image->bounds.size
   };
   bluetooth_layer = bitmap_layer_create(frame3);
@@ -460,6 +641,9 @@ static void init(void) {
   day_name_layer = bitmap_layer_create(dummy_frame);
   layer_add_child(window_layer, bitmap_layer_get_layer(day_name_layer));
   
+  iconotiempo_layer = bitmap_layer_create(dummy_frame);
+  layer_add_child(window_layer, bitmap_layer_get_layer(iconotiempo_layer));
+  
   for (int i = 0; i < TOTAL_TIME_DIGITS; ++i) {
     time_digits_layers[i] = bitmap_layer_create(dummy_frame);
     layer_add_child(window_layer, bitmap_layer_get_layer(time_digits_layers[i]));
@@ -489,7 +673,10 @@ static void init(void) {
     layer_add_child(window_layer, bitmap_layer_get_layer(battery_percent_layers[i]));
   }
     
-
+  for (int i = 0; i < TOTAL_TEMP_DIGITS; ++i) {
+    temp_layers[i] = bitmap_layer_create(dummy_frame);
+    layer_add_child(window_layer, bitmap_layer_get_layer(temp_layers[i]));
+  }
 
   
   toggle_bluetooth_icon(bluetooth_connection_service_peek());
@@ -526,7 +713,8 @@ static void init(void) {
 static void deinit(void) {
 
 
-  
+  free(weather_data);
+
   tick_timer_service_unsubscribe();
   bluetooth_connection_service_unsubscribe();
   battery_state_service_unsubscribe();
@@ -580,7 +768,10 @@ static void deinit(void) {
   gbitmap_destroy(day_name_image);
   day_name_image = NULL;
 
-  
+  layer_remove_from_parent(bitmap_layer_get_layer(iconotiempo_layer));
+  bitmap_layer_destroy(iconotiempo_layer);
+  gbitmap_destroy(iconotiempo_image);
+  iconotiempo_image = NULL;  
 
   
 	
@@ -632,6 +823,15 @@ static void deinit(void) {
     battery_percent_image[i] = NULL;
     bitmap_layer_destroy(battery_percent_layers[i]); 
 	battery_percent_layers[i] = NULL;
+  } 
+  
+  
+  for (int i = 0; i < TOTAL_TEMP_DIGITS; i++) {
+    layer_remove_from_parent(bitmap_layer_get_layer(temp_layers[i]));
+    gbitmap_destroy(battery_percent_image[i]);
+    battery_percent_image[i] = NULL;
+    bitmap_layer_destroy(temp_layers[i]); 
+	temp_layers[i] = NULL;
   } 
 	
   layer_remove_from_parent(window_layer);
