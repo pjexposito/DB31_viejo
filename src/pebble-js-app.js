@@ -13,7 +13,7 @@ var updateInProgress = false;
 function updateWeather() {
     if (!updateInProgress) {
         updateInProgress = true;
-        var locationOptions = { "timeout": 15000, "maximumAge": 60000 };
+        var locationOptions = { "timeout": 15000, "maximumAge": 600000 };
         navigator.geolocation.getCurrentPosition(locationSuccess, locationError, locationOptions);
     }
     else {

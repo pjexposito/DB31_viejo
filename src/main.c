@@ -2,6 +2,11 @@
 // Código del tiempo adaptado de https://github.com/Niknam/futura-weather-sdk2.0
 // Código del reloj basado en https://github.com/orviwan/91-Dub-v2.0
 
+// UUID para versión en español: "11d1527e-985b-4844-bc10-34ede0ee9caf"
+// UUID para versión en inglés:  "a8336799-b197-4e3d-8afd-3290317c65b2"
+
+
+
 #include "pebble.h"
 #include "network.h"
 
@@ -19,11 +24,15 @@ static uint8_t batteryPercent;
   
 // SPANISH = 1, texto en español
 // SPANISH = 0, text in english  
-#define SPANISH 1
+#define IDIOMA 0
+  
+// SPANISH = 1, Formato europeo (DD/MM/AAAA)
+// SPANISH = 0, Formato americano (MM/DD/AAAA)
+#define DATEFORMAT 1
   
 // TIEMPO = 1, muestra el clima
 // TIEMPO = 0, no muestra datos del clima 
-#define TIEMPO 1
+#define TIEMPO 0
 
 // Vibe on BT lost  
 static int BluetoothVibe = 1;
@@ -402,11 +411,11 @@ unsigned short get_display_hour(unsigned short hour) {
 }
 
 static void update_days(struct tm *tick_time) {
-  if (SPANISH==1)
+  if (IDIOMA==1)
     set_container_image(&day_name_image, day_name_layer, DAY_NAME_IMAGE_RESOURCE_IDS[tick_time->tm_wday], GPoint(41, 42));
   else
     set_container_image(&day_name_image, day_name_layer, DAY_NAME_EN_IMAGE_RESOURCE_IDS[tick_time->tm_wday], GPoint(41, 42));
-  if (SPANISH==1)
+  if (DATEFORMAT==1)
   {
     set_container_image(&date_digits_images[0], date_digits_layers[0], DATENUM_IMAGE_RESOURCE_IDS[tick_time->tm_mday/10], GPoint(72, 70));
     set_container_image(&date_digits_images[1], date_digits_layers[1], DATENUM_IMAGE_RESOURCE_IDS[tick_time->tm_mday%10], GPoint(85, 70));
@@ -419,7 +428,7 @@ static void update_days(struct tm *tick_time) {
 }
 
 static void update_months(struct tm *tick_time) {
-  if (SPANISH==1)
+  if (DATEFORMAT==1)
   {
     set_container_image(&month_digits_images[0], month_digits_layers[0], DATENUM_IMAGE_RESOURCE_IDS[(tick_time->tm_mon+1)/10], GPoint(110, 70));
     set_container_image(&month_digits_images[1], month_digits_layers[1], DATENUM_IMAGE_RESOURCE_IDS[(tick_time->tm_mon+1)%10], GPoint(123, 70));  }
